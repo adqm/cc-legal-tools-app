@@ -38,7 +38,12 @@ RUN apt-get update && apt-get install -y \
         git \
         sqlite3 \
         ssh \
+        nodejs \
+        npm \
     && rm -rf /var/lib/apt/lists/*
+
+## Install prettier for HTML formatting
+RUN npm install -g prettier
 
 ## Install pipenv
 RUN pip install --upgrade \

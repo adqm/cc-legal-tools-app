@@ -1,10 +1,12 @@
 # Standard library
 import logging
+import io
 import os
 import posixpath
+import tempfile
+import subprocess
 
 # Third-party
-from bs4 import NavigableString
 from colorlog.escape_codes import escape_codes
 from django.conf import settings
 from django.core.cache import cache
@@ -211,10 +213,7 @@ def validate_list_is_all_text(list_):
     """
     newlist = []
     for i, value in enumerate(list_):
-        if isinstance(value, NavigableString):
-            newlist.append(str(value))
-            continue
-        elif not isinstance(value, (str, list, dict)):
+        if not isinstance(value, (str, list, dict)):
             raise ValueError(
                 f"Not a str, list, or dict: {type(value)}: {value}"
             )
@@ -562,3 +561,15 @@ def update_title(options):
         LOG.info(f"legal code object titles updated: {count}")
 
     return results
+
+
+def pretty_html_bytes(html_text):
+    res = subprocess.run(
+        ["prettier", "--stdin-filepath", "cc.html"],
+        input=html_text,
+        capture_output=True,
+        text=False,
+    )
+    if res.returncode != 0:
+        return f"ouch.{res!r}".encode("utf-8")
+    return res.stdout
