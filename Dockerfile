@@ -44,7 +44,6 @@ RUN apt-get update && apt-get install -y \
 
 ## Install Biome (HTML formatter)
 RUN npm install -g @biomejs/biome
-RUN npm install -g prettier
 
 ## Install pipenv
 RUN pip install --upgrade \
@@ -61,6 +60,9 @@ RUN useradd --create-home cc
 WORKDIR /home/cc
 USER cc:cc
 RUN mkdir .ssh && chmod 0700 .ssh
+
+# Add Biome Configuration
+COPY biome.json .
 
 # Configure git for tests
 RUN git config --global user.email 'app@docker-container' \

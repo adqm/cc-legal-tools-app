@@ -1,0 +1,10 @@
+{
+  "files": {
+    "ignoreUnknown": false
+  },
+  "html": {
+    "formatter": {
+        "enabled": true
+    }
+  }
+}
