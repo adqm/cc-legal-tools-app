@@ -42,7 +42,8 @@ RUN apt-get update && apt-get install -y \
         npm \
     && rm -rf /var/lib/apt/lists/*
 
-## Install prettier for HTML formatting
+## Install Biome (HTML formatter)
+RUN npm install -g @biomejs/biome
 RUN npm install -g prettier
 
 ## Install pipenv

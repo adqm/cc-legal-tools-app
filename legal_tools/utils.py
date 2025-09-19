@@ -564,6 +564,10 @@ def update_title(options):
 
 
 def pretty_html_bytes(html_text):
+    try:
+        html_text = html_text.encode('utf-8')
+    except:
+        pass
     res = subprocess.run(
         ["prettier", "--stdin-filepath", "cc.html"],
         input=html_text,
@@ -571,5 +575,6 @@ def pretty_html_bytes(html_text):
         text=False,
     )
     if res.returncode != 0:
-        return f"ouch.{res!r}".encode("utf-8")
+        print(res.stderr.decode('utf-8'))
+        return html_text
     return res.stdout
