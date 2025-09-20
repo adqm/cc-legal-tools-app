@@ -42,10 +42,6 @@ RUN apt-get update && apt-get install -y \
         npm \
     && rm -rf /var/lib/apt/lists/*
 
-## Install Biome (HTML formatter)
-RUN npm install -g @biomejs/biome
-RUN npm install -g prettier
-
 ## Install pipenv
 RUN pip install --upgrade \
     pip \
@@ -61,6 +57,10 @@ RUN useradd --create-home cc
 WORKDIR /home/cc
 USER cc:cc
 RUN mkdir .ssh && chmod 0700 .ssh
+
+# Set up our node environment
+RUN npm install express prettier
+COPY prettier-server.js .
 
 # Configure git for tests
 RUN git config --global user.email 'app@docker-container' \

@@ -563,18 +563,16 @@ def update_title(options):
     return results
 
 
+import urllib.error
+import urllib.request
 def pretty_html_bytes(html_text):
     try:
         html_text = html_text.encode('utf-8')
     except:
         pass
-    res = subprocess.run(
-        ["prettier", "--stdin-filepath", "cc.html"],
-        input=html_text,
-        capture_output=True,
-        text=False,
-    )
-    if res.returncode != 0:
-        print(res.stderr.decode('utf-8'))
+    try:
+        with urllib.request.urlopen('http://localhost:3000', data=html_text) as f:
+            return f.read()
+    except urllib.error.HTTPError as e:
+        print(e)
         return html_text
-    return res.stdout
