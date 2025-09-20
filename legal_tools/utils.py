@@ -574,5 +574,5 @@ def pretty_html_bytes(html_text):
         with urllib.request.urlopen('http://localhost:3000', data=html_text) as f:
             return f.read()
     except urllib.error.HTTPError as e:
-        print(e)
+        print(e.read().decode('utf-8'))
         return html_text
