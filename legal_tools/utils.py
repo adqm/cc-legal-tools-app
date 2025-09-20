@@ -1,10 +1,9 @@
 # Standard library
 import logging
-import io
 import os
 import posixpath
-import tempfile
-import subprocess
+import urllib.error
+import urllib.request
 
 # Third-party
 from colorlog.escape_codes import escape_codes
@@ -563,16 +562,14 @@ def update_title(options):
     return results
 
 
-import urllib.error
-import urllib.request
 def pretty_html_bytes(html_text):
+    if not isinstance(html_text, bytes):
+        html_text = html_text.encode("utf-8")
     try:
-        html_text = html_text.encode('utf-8')
-    except:
-        pass
-    try:
-        with urllib.request.urlopen('http://localhost:3000', data=html_text) as f:
+        with urllib.request.urlopen(
+            "http://localhost:3000", data=html_text
+        ) as f:
             return f.read()
     except urllib.error.HTTPError as e:
-        print(e.read().decode('utf-8'))
+        print(e.read().decode("utf-8"))
         return html_text
